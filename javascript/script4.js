@@ -1,41 +1,55 @@
 // ======================================================================
-//  NIVEL 3 — Ahora enlaza con el Nivel 4 (en vez de ser el final)
+//  NIVEL 4 — Último nivel del juego
 // ======================================================================
-//  Cambio único respecto a la versión anterior:
+//  Fórmula idéntica a los niveles anteriores. Cambios específicos:
 //
-//  1) Se quitó "next" del objeto `screens`, porque "screen-next"
-//     ya NO existe en nivel3.html. La pantalla final del juego se
-//     movió al Nivel 4.
+//  1) SCENE_ITEMS (objetos correctos): 3 en este nivel —
+//     aceite_verde, sarten_morada y microondas_blanco.
+//     En el grid se sortean 2 de los 3 para cada partida
+//     (igual que en el Nivel 2).
 //
-//  2) "btn-continue" (veredicto INOCENTE) ya no hace showScreen('next'),
-//     sino que redirige a /ProyectoCrimen/nivel4.html.
+//  2) DECOY_ITEMS (señuelos): 4 objetos —
+//     paño_amarillo, llaves_plateadas, pimienta y tasa_roja.
+//     De los 4 se sortean 2 para cada partida.
 //
-//  El resto de la lógica (datos, mecánica, evaluación) NO cambia.
+//  3) El grid sigue mostrando 4 cartas (2 correctas + 2 señuelo),
+//     el jugador elige 2. Si ambas son correctas -> INOCENTE.
+//     Si al menos 1 es señuelo -> SOSPECHOSO.
+//
+//  4) Este es el ÚLTIMO nivel:
+//     - INOCENTE -> "btn-continue" muestra "screen-next"
+//       (pantalla "Caso cerrado", fin del juego).
+//     - En "screen-next", "btn-replay" redirige a index.html
+//       para reiniciar todo el juego desde el Nivel 1.
+//     - SOSPECHOSO -> "btn-restart" reinicia solo este Nivel 4.
 // ======================================================================
 
 // ---------- Data ----------
+// Objetos que SÍ estaban en la escena (3 en este nivel)
 const SCENE_ITEMS = [
-  { id:'algodon',   img:'/ProyectoCrimen/image/algodon.png',   name:'Algodón' },
-  { id:'pastillas', img:'/ProyectoCrimen/image/pastillas.png', name:'Pastillas' },
+  { id:'aceite',    img:'/ProyectoCrimen/image/aceite_verde.png',      name:'Aceite de oliva' },
+  { id:'sarten',    img:'/ProyectoCrimen/image/sarten_morada.png',     name:'Sartén morada' },
+  { id:'microondas',img:'/ProyectoCrimen/image/microondas_blanco.png', name:'Microondas blanco' },
 ];
 
+// Objetos que NO estaban en la escena (señuelos, 4 en este nivel)
 const DECOY_ITEMS = [
-  { id:'billetera', img:'/ProyectoCrimen/image/billetera_marron.png', name:'Billetera marrón' },
-  { id:'champu',    img:'/ProyectoCrimen/image/champu_rojo.png',      name:'Champú rojo' },
-  { id:'vino',      img:'/ProyectoCrimen/image/vino_dragon.png',      name:'Vino Casa Draconis' },
-  { id:'reloj',     img:'/ProyectoCrimen/image/reloj_rojo.png',       name:'Reloj rojo' },
+  { id:'pano',    img:'/ProyectoCrimen/image/paño_amarillo.png',    name:'Paño amarillo' },
+  { id:'llaves',  img:'/ProyectoCrimen/image/llaves_plateadas.png', name:'Llaves plateadas' },
+  { id:'pimienta',img:'/ProyectoCrimen/image/pimienta.png',         name:'Pimienta' },
+  { id:'tasa',    img:'/ProyectoCrimen/image/tasa_roja.png',        name:'Taza roja' },
 ];
 
 const DIALOGUE_OK  = '"Veo que todo está en orden, eres inocente por ahora... No salgas de la casa hasta que termine el interrogatorio."';
 const DIALOGUE_BAD = '"Algo no cuadra, ahora eres sospechoso. Todos en esta casa vendrán conmigo a la estación."';
 
 // ---------- Elements ----------
-// CAMBIO: ya no se incluye "next" porque "screen-next" se eliminó de nivel3.html
 const screens = {
   intro:     document.getElementById('screen-intro'),
   memorize:  document.getElementById('screen-memorize'),
   selection: document.getElementById('screen-selection'),
   result:    document.getElementById('screen-result'),
+  next:      document.getElementById('screen-next'), // pantalla final "Caso cerrado"
 };
 const timerEl         = document.getElementById('timer');
 const grid            = document.getElementById('grid');
@@ -46,6 +60,9 @@ const resultText      = document.getElementById('result-text');
 const btnContinue     = document.getElementById('btn-continue');
 const btnRestart      = document.getElementById('btn-restart');
 
+// correctIds incluye los 3 objetos correctos de este nivel.
+// La evaluación chequea contra esta lista sin importar cuáles
+// 2 de los 3 hayan salido sorteados en el grid.
 const correctIds = SCENE_ITEMS.map(i => i.id);
 let selected = [];
 let countdownInterval = null;
@@ -85,8 +102,11 @@ function setupSelection(){
   btnConfirm.disabled = true;
   selectionStatus.textContent = 'Selecciona 2 objetos';
 
+  // 2 de los 3 objetos correctos sorteados al azar
+  const real    = shuffle(SCENE_ITEMS).slice(0, 2);
+  // 2 de los 4 señuelos sorteados al azar
   const fake    = shuffle(DECOY_ITEMS).slice(0, 2);
-  const options = shuffle([...SCENE_ITEMS, ...fake]);
+  const options = shuffle([...real, ...fake]);
 
   grid.innerHTML = '';
   options.forEach((item, idx) => {
@@ -152,9 +172,14 @@ document.getElementById('btn-start').addEventListener('click', () => {
 
 btnConfirm.addEventListener('click', evaluate);
 
-// CAMBIO PRINCIPAL: veredicto INOCENTE -> saltar al Nivel 4
-btnContinue.addEventListener('click', () => {
-  window.location.href = '/ProyectoCrimen/nivel4.html';
-});
+// Veredicto INOCENTE -> pantalla final "Caso cerrado" (fin del juego)
+btnContinue.addEventListener('click', () => showScreen('next'));
 
+// Veredicto SOSPECHOSO -> reintentar solo este Nivel 4
 btnRestart.addEventListener('click', resetGame);
+
+// "Jugar de nuevo" en la pantalla final -> reinicia TODO el juego
+// desde el Nivel 1 (index.html)
+document.getElementById('btn-replay').addEventListener('click', () => {
+  window.location.href = '/ProyectoCrimen/index.html';
+});

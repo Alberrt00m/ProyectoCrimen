@@ -10,36 +10,32 @@
 <body>
   <div class="frame">
 
-    <! intro >
     <section id="screen-intro" class="screen active">
       <div class="badge-icon">🚔</div>
-      <span class="eyebrow">Expediente 505</span>
+      <span class="eyebrow">Crimen Accidental</span>
       <span class="eyebrow" style="letter-spacing:.16em;">Capítulo 3</span>
-      <h1>"Estamos cerca de terminar, memoriza bien los objetos"</h1>
-      <p class="lead">Van al baño, de ahi sacaron las pastillas. memoriza cada detalle.</p>
+      <h1>"Nueva escena. Memoriza bien, la investigación se complica."</h1>
+      <p class="lead">Observa con atención. Debes recordar con precisión qué objetos había en este lugar para no caer en contradicciones.</p>
       <button class="btn" id="btn-start">Comenzar</button>
     </section>
 
-    <! memorizar >
     <section id="screen-memorize" class="screen">
       <div class="timer" id="timer">5</div>
       <span class="eyebrow">Memoriza la escena</span>
       <div class="scene-photo">
         <img src="/ProyectoCrimen/image/escena_3.png" alt="Escena del crimen - Nivel 3">
       </div>
-      <p class="lead" style="font-size:13px;">Observa bien cada detalle, de eso depende nuestra libertad.</p>
+      <p class="lead" style="font-size:13px;">Observa bien; la imagen desaparecerá cuando el contador llegue a cero.</p>
     </section>
 
-    <! elegir >
     <section id="screen-selection" class="screen">
       <span class="eyebrow">Interrogatorio</span>
-      <h1 style="font-size:20px;">¿Qué objetos había en la escena?</h1>
+      <h1 style="font-size:20px;">¿Qué dos objetos había en la escena?</h1>
       <div class="grid" id="grid"></div>
       <p class="selection-status" id="selection-status">Selecciona 2 objetos</p>
       <button class="btn" id="btn-confirm" disabled>Confirmar</button>
     </section>
 
-    <! resultado >
     <section id="screen-result" class="screen">
       <div class="stamp" id="stamp">INOCENTE</div>
       <div class="report">
@@ -48,15 +44,6 @@
       </div>
       <button class="btn" id="btn-continue">Continuar</button>
       <button class="btn danger" id="btn-restart" style="display:none;">Volver a empezar</button>
-    </section>
-
-    <! pantalla final: juego completo >
-    <section id="screen-next" class="screen">
-      <div class="badge-icon">🏁</div>
-      <span class="eyebrow">Ningun sospechoso</span>
-      <h1>¡Has superado el interrogatorio!</h1>
-      <p class="lead">No hay evidencia que apunte a ningún sospechoso. Nadie ira a la carcel. Ahora ¿Que hacemos con el cadáver?</p>
-      <button class="btn secondary" id="btn-replay">Jugar de nuevo</button>
     </section>
 
   </div>
