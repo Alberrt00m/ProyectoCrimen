@@ -3,19 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crimen Accidental</title>
+<title>Crimen Accidental - Nivel 2</title>
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<!-- Se reutiliza el mismo style.css del Nivel 1: el diseño/tema no cambia -->
 <link rel="stylesheet" href="/ProyectoCrimen/css/style.css">
 </head>
 <body>
   <div class="frame">
+
     <! intro >
     <section id="screen-intro" class="screen active">
       <div class="badge-icon">🚔</div>
       <span class="eyebrow">Crimen Accidental</span>
-      <span class="eyebrow" style="letter-spacing:.16em;">Hecho por BERRT</span>
-      <h1>"La policía viene pronto. Memoriza los objetos de la escena."</h1>
-      <p class="lead">Hubo un crimen, nadie se ira a la carcel si nos ayudamos. Identifica qué objetos había realmente en la escena.</p>
+      <span class="eyebrow" style="letter-spacing:.16em;">Capítulo 2</span>
+      <h1>"El interrogatorio continúa. Memoriza los objetos de la nueva escena."</h1>
+      <p class="lead">La investigación sigue. Observa con atención e identifica qué objetos había realmente en esta escena.</p>
       <button class="btn" id="btn-start">Comenzar</button>
     </section>
 
@@ -24,7 +26,7 @@
       <div class="timer" id="timer">5</div>
       <span class="eyebrow">Memoriza la escena</span>
       <div class="scene-photo">
-        <img src="/ProyectoCrimen/escena_1.jpeg" alt="Escena del crimen">
+        <img src="/ProyectoCrimen/escena_2.jpeg" alt="Escena del crimen - Nivel 2">
       </div>
       <p class="lead" style="font-size:13px;">Observa bien. La imagen desaparecerá cuando el contador llegue a cero.</p>
     </section>
@@ -40,13 +42,10 @@
 
     <! resultado >
     <!--
-      CAMBIO PARA ENLAZAR NIVEL 1 -> NIVEL 2:
-      - Ya NO existe una pantalla "screen-next" dentro de este archivo.
-      - El botón "btn-continue" (cuando el veredicto es INOCENTE) ahora
-        redirige directamente a /ProyectoCrimen/nivel2.html desde script.js,
-        en lugar de mostrar una pantalla interna.
-      - El botón "btn-restart" (cuando el veredicto es SOSPECHOSO) sigue
-        reiniciando este mismo Nivel 1 (vuelve a "screen-intro").
+      - Si el veredicto es SOSPECHOSO -> "btn-restart" reinicia SOLO
+        este Nivel 2 (vuelve a "screen-intro" de esta misma página).
+      - Si el veredicto es INOCENTE -> "btn-continue" muestra
+        "screen-next", que ahora es la pantalla de "juego completado".
     -->
     <section id="screen-result" class="screen">
       <div class="stamp" id="stamp">INOCENTE</div>
@@ -58,7 +57,22 @@
       <button class="btn danger" id="btn-restart" style="display:none;">Volver a empezar</button>
     </section>
 
+    <! pantalla final: juego completo >
+    <!--
+      CAMBIO: esta pantalla ya no anuncia un "Capítulo 3" inexistente.
+      Ahora marca el final del juego (Nivel 1 + Nivel 2 superados) y
+      el botón "Jugar de nuevo" reinicia TODO el juego, mandando al
+      jugador de vuelta a index.html (Nivel 1).
+    -->
+    <section id="screen-next" class="screen">
+      <div class="badge-icon">🏁</div>
+      <span class="eyebrow">Caso cerrado</span>
+      <h1>¡Has superado el interrogatorio!</h1>
+      <p class="lead">Tu testimonio coincide en ambas escenas. La policía da por cerrado el caso por ahora. ¿Quieres volver a intentarlo desde el principio?</p>
+      <button class="btn secondary" id="btn-replay">Jugar de nuevo</button>
+    </section>
+
   </div>
-  <script src="/ProyectoCrimen/javascript/script.js"></script>
+  <script src="/ProyectoCrimen/javascript/script2.js"></script>
 </body>
 </html>

@@ -1,44 +1,49 @@
 // ======================================================================
-//  NIVEL 1 — Conexión con el Nivel 2
+//  NIVEL 2 — Conexión con el flujo completo del juego
 // ======================================================================
-//  Antes, al ganar (INOCENTE), el botón "Continuar" mostraba una
-//  pantalla interna ("screen-next") dentro del mismo archivo.
+//  Cambios respecto a la versión anterior de este archivo:
 //
-//  Ahora, al ganar, "Continuar" te lleva directamente al Nivel 2
-//  (nivel2.html), que es un archivo/página aparte. Por eso:
-//    - Se quitó "next" del objeto `screens` (esa pantalla ya no existe
-//      en index.html).
-//    - El listener de btnContinue ya no llama a showScreen('next'),
-//      sino que hace window.location.href hacia nivel2.html.
+//  1) "screen-next" sigue existiendo (ahora es la pantalla de "Caso
+//     cerrado" / juego completado), así que el botón "btn-continue"
+//     (veredicto INOCENTE) sigue haciendo showScreen('next') igual
+//     que antes.
 //
-//  Si el veredicto es SOSPECHOSO, todo sigue igual: "Volver a empezar"
-//  reinicia este mismo Nivel 1.
+//  2) "btn-restart" (veredicto SOSPECHOSO) sigue reiniciando SOLO el
+//     Nivel 2 con resetGame() -> showScreen('intro') de esta misma
+//     página, igual que antes.
+//
+//  3) NUEVO: "btn-replay", que antes solo llamaba a resetGame()
+//     (reiniciar este nivel), ahora representa "jugar de nuevo desde
+//     cero" y redirige a /ProyectoCrimen/index.html (Nivel 1), que es
+//     el inicio del juego completo.
 // ======================================================================
 
 // ---------- Data ----------
-// Objetos que SÍ estaban en la escena
+// Objetos que SÍ estaban en la escena (3 en este nivel)
 const SCENE_ITEMS = [
-  { id:'libro',   img:'/ProyectoCrimen/libro_morado.png',   name:'Libro morado' },
-  { id:'lampara', img:'/ProyectoCrimen/lampara_azul.png',    name:'Lampara azul' },
+  { id:'vaso',    img:'/ProyectoCrimen/vaso_añejo.png',     name:'Vaso añejo' },
+  { id:'pato',    img:'/ProyectoCrimen/pato_inflable.png',  name:'Pato inflable' },
+  { id:'maceta',  img:'/ProyectoCrimen/maceta_azul.png',    name:'Maceta azul' },
 ];
 
-// Objetos que NO estaban en la escena (señuelos)
+// Objetos que NO estaban en la escena (señuelos, 4 en este nivel)
 const DECOY_ITEMS = [
-  { id:'almohada', img:'/ProyectoCrimen/almohada_morada.png', name:'Almohada morada' },
-  { id:'toalla',   img:'/ProyectoCrimen/toalla_rosa.png',     name:'Toalla rosa' },
-  { id:'telefono', img:'/ProyectoCrimen/telefono_roto.png',   name:'Teléfono roto' },
+  { id:'blusa',      img:'/ProyectoCrimen/blusa_verde.png',       name:'Blusa verde' },
+  { id:'cargador',   img:'/ProyectoCrimen/cargador_negro.png',    name:'Cargador negro' },
+  { id:'cuchillo',   img:'/ProyectoCrimen/cuchillo_raro.png',     name:'Cuchillo raro' },
+  { id:'candelabro', img:'/ProyectoCrimen/candelabro_bronce.png', name:'Candelabro de bronce' },
 ];
 
 const DIALOGUE_OK  = '"Veo que todo está en orden, eres inocente por ahora... No salgas de la casa hasta que termine el interrogatorio."';
 const DIALOGUE_BAD = '"Algo no cuadra, ahora eres sospechoso. Todos en esta casa vendrán conmigo a la estación."';
 
 // ---------- Elements ----------
-// CAMBIO: ya no se incluye "next" porque "screen-next" se eliminó de index.html
 const screens = {
   intro: document.getElementById('screen-intro'),
   memorize: document.getElementById('screen-memorize'),
   selection: document.getElementById('screen-selection'),
   result: document.getElementById('screen-result'),
+  next: document.getElementById('screen-next'), // ahora es "Caso cerrado"
 };
 const timerEl = document.getElementById('timer');
 const grid = document.getElementById('grid');
@@ -49,6 +54,7 @@ const resultText = document.getElementById('result-text');
 const btnContinue = document.getElementById('btn-continue');
 const btnRestart = document.getElementById('btn-restart');
 
+// correctIds incluye los 3 objetos correctos de este nivel.
 const correctIds = SCENE_ITEMS.map(i => i.id);
 let selected = [];
 let countdownInterval = null;
@@ -90,9 +96,13 @@ function setupSelection(){
   btnConfirm.disabled = true;
   selectionStatus.textContent = 'Selecciona 2 objetos';
 
-  // los 2 objetos reales + 2 señuelos al azar
+  // Se eligen al azar 2 de los 3 objetos correctos posibles...
+  const real = shuffle(SCENE_ITEMS).slice(0, 2);
+  // ...y 2 de los 4 señuelos posibles.
+  // El grid sigue teniendo 4 cartas en total, igual que en el Nivel 1.
   const fake = shuffle(DECOY_ITEMS).slice(0, 2);
-  const options = shuffle([...SCENE_ITEMS, ...fake]);
+
+  const options = shuffle([...real, ...fake]);
 
   grid.innerHTML = '';
   options.forEach((item, idx) => {
@@ -147,7 +157,7 @@ function evaluate(){
   showScreen('result');
 }
 
-// ---------- Reset (solo Nivel 1, cuando el veredicto es SOSPECHOSO) ----------
+// ---------- Reset (reinicia SOLO este Nivel 2) ----------
 function resetGame(){
   selected = [];
   showScreen('intro');
@@ -161,10 +171,14 @@ document.getElementById('btn-start').addEventListener('click', () => {
 
 btnConfirm.addEventListener('click', evaluate);
 
-// CAMBIO PRINCIPAL: en vez de mostrar una pantalla interna ("screen-next"),
-// al ganar el Nivel 1 saltamos al archivo del Nivel 2.
-btnContinue.addEventListener('click', () => {
-  window.location.href = '/ProyectoCrimen/nivel2.html';
-});
+// Veredicto INOCENTE -> pantalla "Caso cerrado" (juego completo)
+btnContinue.addEventListener('click', () => showScreen('next'));
 
+// Veredicto SOSPECHOSO -> reintentar solo este Nivel 2
 btnRestart.addEventListener('click', resetGame);
+
+// CAMBIO PRINCIPAL: "Jugar de nuevo" en la pantalla final ya no reinicia
+// este nivel, sino TODO el juego desde el Nivel 1.
+document.getElementById('btn-replay').addEventListener('click', () => {
+  window.location.href = '/ProyectoCrimen/index.html';
+});
