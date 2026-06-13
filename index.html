@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crimen Accidental</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ProyectoCrimen/css/style.css">
+</head>
+<body>
+  <div class="frame">
+    <! intro >
+    <section id="screen-intro" class="screen active">
+      <div class="badge-icon">🚔</div>
+      <span class="eyebrow">Expediente 505</span>
+      <span class="eyebrow" style="letter-spacing:.16em;">Hecho por BERRT</span>
+      <h1>"La policía viene pronto. Memoriza los objetos de la escena."</h1>
+      <p class="lead">Alguien murió en la casa. Si nos ayudamos, nadie irá a la cárcel. Memoriza los objetos.</p>
+      <button class="btn" id="btn-start">Comenzar</button>
+    </section>
+
+    <! memorizar >
+    <section id="screen-memorize" class="screen">
+      <div class="timer" id="timer">5</div>
+      <span class="eyebrow">Memoriza la escena</span>
+      <div class="scene-photo">
+        <img src="/ProyectoCrimen/image/escena_1.jpeg" alt="Escena del crimen">
+      </div>
+      <p class="lead" style="font-size:13px;">Observa bien cada detalle, de eso depende nuestra libertad.</p>
+    </section>
+
+    <! elegir >
+    <section id="screen-selection" class="screen">
+      <span class="eyebrow">Interrogatorio</span>
+      <h1 style="font-size:20px;">¿Qué objetos había en la escena?</h1>
+      <div class="grid" id="grid"></div>
+      <p class="selection-status" id="selection-status">Selecciona 2 objetos</p>
+      <button class="btn" id="btn-confirm" disabled>Confirmar</button>
+    </section>
+
+    <! resultado >
+    <section id="screen-result" class="screen">
+      <div class="stamp" id="stamp">INOCENTE</div>
+      <div class="report">
+        <div class="who">Agente al mando</div>
+        <p id="result-text"></p>
+      </div>
+      <button class="btn" id="btn-continue">Continuar</button>
+      <button class="btn danger" id="btn-restart" style="display:none;">Volver a empezar</button>
+    </section>
+
+  </div>
+  <script src="/ProyectoCrimen/javascript/script.js"></script>
+</body>
+</html>
