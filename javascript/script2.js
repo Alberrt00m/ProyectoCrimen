@@ -1,21 +1,20 @@
 // ======================================================================
-//  NIVEL 2 — Conexión con el flujo completo del juego
+//  NIVEL 2 — Ahora enlaza con el Nivel 3 (en vez de ser el final)
 // ======================================================================
 //  Cambios respecto a la versión anterior de este archivo:
 //
-//  1) "screen-next" sigue existiendo (ahora es la pantalla de "Caso
-//     cerrado" / juego completado), así que el botón "btn-continue"
-//     (veredicto INOCENTE) sigue haciendo showScreen('next') igual
-//     que antes.
+//  1) Se quitó "next" del objeto `screens`, porque "screen-next"
+//     (la pantalla "Caso cerrado") ya NO existe en nivel2.html.
+//     Ese rol de pantalla final ahora lo cumple nivel3.html.
 //
-//  2) "btn-restart" (veredicto SOSPECHOSO) sigue reiniciando SOLO el
-//     Nivel 2 con resetGame() -> showScreen('intro') de esta misma
-//     página, igual que antes.
+//  2) "btn-continue" (veredicto INOCENTE) ya no hace showScreen('next'),
+//     sino que redirige a /ProyectoCrimen/nivel3.html.
 //
-//  3) NUEVO: "btn-replay", que antes solo llamaba a resetGame()
-//     (reiniciar este nivel), ahora representa "jugar de nuevo desde
-//     cero" y redirige a /ProyectoCrimen/index.html (Nivel 1), que es
-//     el inicio del juego completo.
+//  3) "btn-restart" (veredicto SOSPECHOSO) sigue igual: reinicia solo
+//     este Nivel 2 con resetGame() -> showScreen('intro').
+//
+//  El resto de la lógica (datos, mecánica de selección, evaluación)
+//  NO cambia respecto a la versión anterior del Nivel 2.
 // ======================================================================
 
 // ---------- Data ----------
@@ -38,12 +37,12 @@ const DIALOGUE_OK  = '"Veo que todo está en orden, eres inocente por ahora... N
 const DIALOGUE_BAD = '"Algo no cuadra, ahora eres sospechoso. Todos en esta casa vendrán conmigo a la estación."';
 
 // ---------- Elements ----------
+// CAMBIO: ya no se incluye "next" porque "screen-next" se eliminó de nivel2.html
 const screens = {
   intro: document.getElementById('screen-intro'),
   memorize: document.getElementById('screen-memorize'),
   selection: document.getElementById('screen-selection'),
   result: document.getElementById('screen-result'),
-  next: document.getElementById('screen-next'), // ahora es "Caso cerrado"
 };
 const timerEl = document.getElementById('timer');
 const grid = document.getElementById('grid');
@@ -99,7 +98,7 @@ function setupSelection(){
   // Se eligen al azar 2 de los 3 objetos correctos posibles...
   const real = shuffle(SCENE_ITEMS).slice(0, 2);
   // ...y 2 de los 4 señuelos posibles.
-  // El grid sigue teniendo 4 cartas en total, igual que en el Nivel 1.
+  // El grid sigue teniendo 4 cartas en total.
   const fake = shuffle(DECOY_ITEMS).slice(0, 2);
 
   const options = shuffle([...real, ...fake]);
@@ -171,14 +170,10 @@ document.getElementById('btn-start').addEventListener('click', () => {
 
 btnConfirm.addEventListener('click', evaluate);
 
-// Veredicto INOCENTE -> pantalla "Caso cerrado" (juego completo)
-btnContinue.addEventListener('click', () => showScreen('next'));
+// CAMBIO PRINCIPAL: veredicto INOCENTE -> saltar al Nivel 3
+btnContinue.addEventListener('click', () => {
+  window.location.href = '/ProyectoCrimen/nivel3.html';
+});
 
 // Veredicto SOSPECHOSO -> reintentar solo este Nivel 2
 btnRestart.addEventListener('click', resetGame);
-
-// CAMBIO PRINCIPAL: "Jugar de nuevo" en la pantalla final ya no reinicia
-// este nivel, sino TODO el juego desde el Nivel 1.
-document.getElementById('btn-replay').addEventListener('click', () => {
-  window.location.href = '/ProyectoCrimen/index.html';
-});

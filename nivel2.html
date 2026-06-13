@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crimen Accidental - Nivel 2</title>
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<!-- Se reutiliza el mismo style.css del Nivel 1: el diseño/tema no cambia -->
+<!-- Se reutiliza el mismo style.css de los demás niveles -->
 <link rel="stylesheet" href="/ProyectoCrimen/css/style.css">
 </head>
 <body>
@@ -42,10 +42,14 @@
 
     <! resultado >
     <!--
-      - Si el veredicto es SOSPECHOSO -> "btn-restart" reinicia SOLO
-        este Nivel 2 (vuelve a "screen-intro" de esta misma página).
-      - Si el veredicto es INOCENTE -> "btn-continue" muestra
-        "screen-next", que ahora es la pantalla de "juego completado".
+      CAMBIO PARA ENLAZAR NIVEL 2 -> NIVEL 3:
+      - Ya NO existe una pantalla "screen-next" dentro de este archivo
+        (antes era la pantalla "Caso cerrado", ahora ese rol lo cumple
+        el Nivel 3).
+      - "btn-continue" (veredicto INOCENTE) ahora redirige directamente
+        a /ProyectoCrimen/nivel3.html desde script2.js.
+      - "btn-restart" (veredicto SOSPECHOSO) sigue reiniciando este
+        mismo Nivel 2 (vuelve a "screen-intro" de esta página).
     -->
     <section id="screen-result" class="screen">
       <div class="stamp" id="stamp">INOCENTE</div>
@@ -55,21 +59,6 @@
       </div>
       <button class="btn" id="btn-continue">Continuar</button>
       <button class="btn danger" id="btn-restart" style="display:none;">Volver a empezar</button>
-    </section>
-
-    <! pantalla final: juego completo >
-    <!--
-      CAMBIO: esta pantalla ya no anuncia un "Capítulo 3" inexistente.
-      Ahora marca el final del juego (Nivel 1 + Nivel 2 superados) y
-      el botón "Jugar de nuevo" reinicia TODO el juego, mandando al
-      jugador de vuelta a index.html (Nivel 1).
-    -->
-    <section id="screen-next" class="screen">
-      <div class="badge-icon">🏁</div>
-      <span class="eyebrow">Caso cerrado</span>
-      <h1>¡Has superado el interrogatorio!</h1>
-      <p class="lead">Tu testimonio coincide en ambas escenas. La policía da por cerrado el caso por ahora. ¿Quieres volver a intentarlo desde el principio?</p>
-      <button class="btn secondary" id="btn-replay">Jugar de nuevo</button>
     </section>
 
   </div>
