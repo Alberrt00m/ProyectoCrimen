@@ -21,11 +21,15 @@
   }
 
   /* ===== Frame ===== */
+  /* 📐 TAMAÑO DEL MARCO GENERAL
+     Ajusta width para cambiar el ancho de toda la tarjeta.
+     Ajusta height (o el segundo valor de min()) para cambiar la altura máxima.
+     Valores actuales: 580px ancho, hasta 860px de alto (o 96vh en pantallas pequeñas). */
   .frame{
     position:relative;
-    width:460px;
+    width:580px;
     max-width:100%;
-    height:min(88vh, 680px);
+    height:min(96vh, 860px);
     background: var(--board);
     border:14px solid var(--board-dark);
     border-radius:8px;
@@ -39,14 +43,18 @@
   }
 
   /* ===== Screens ===== */
+  /* 📐 ESPACIADO INTERNO DE CADA PANTALLA
+     padding: espacio entre el borde del marco y el contenido.
+     gap: separación vertical entre elementos dentro de la pantalla.
+     Bajar estos valores da más espacio a la foto de escena. */
   .screen{
     position:absolute; inset:0;
     display:none;
     flex-direction:column;
     align-items:center; justify-content:center;
-    padding:28px;
+    padding:16px 20px;
     text-align:center;
-    gap:14px;
+    gap:8px;
     overflow-y:auto;
   }
   .screen.active{ display:flex; animation: fadeIn .5s ease; }
@@ -141,30 +149,41 @@
     opacity:.5;
   }
 
+  /* 📐 FOTO DE ESCENA (pantalla "Memoriza")
+     max-width: ancho máximo del marco tipo polaroid. Sube para hacerlo más ancho.
+     padding-bottom (el último valor de padding): espacio bajo la imagen para el texto
+       "ESCENA — NO TOCAR". Baja si quieres menos margen inferior.
+     transform rotate: inclinación decorativa del polaroid. Pon rotate(0deg) para quitar.
+     --scene-img-height (en .scene-photo img): altura fija de la imagen.
+       Sube este valor para hacer la foto más alta y visible. */
   .scene-photo{
     position:relative;
     width:100%;
-    max-width:380px;
+    max-width:520px;
     background: var(--cream);
     border-radius:2px;
-    padding:12px 12px 28px 12px;
+    padding:10px 10px 26px 10px;
     transform: rotate(-1.2deg);
     box-shadow: 0 10px 24px rgba(0,0,0,.45);
   }
   .scene-photo::after{
     content:'ESCENA — NO TOCAR';
     position:absolute;
-    bottom:8px; left:0; right:0;
+    bottom:7px; left:0; right:0;
     text-align:center;
     font-family:'Special Elite', monospace;
     font-size:11px;
     letter-spacing:.15em;
     color:var(--line);
   }
+  /* 📐 IMAGEN DENTRO DEL POLAROID
+     height: altura fija de la foto. Sube para ver más detalle vertical.
+     object-fit:cover recorta si la imagen no tiene la misma proporción. */
   .scene-photo img{
     display:block;
     width:100%;
-    height:auto;
+    height:340px;
+    object-fit:cover;
     border-radius:1px;
     box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
   }
