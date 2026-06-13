@@ -17,3 +17,7 @@ Un juego en 2D de estilo point-and-click desarrollado en HTML5, CSS Y JAVASCRIPT
 ## Autor
 
 BERRT90 // ALBERRT00M
+
+## Enlace del proyecto
+
+[¡Juega!](https://alberrt00m.github.io/ProyectoCrimen/)
