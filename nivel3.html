@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crimen Accidental - Nivel 3</title>
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<!-- Se reutiliza el mismo style.css de los demás niveles -->
 <link rel="stylesheet" href="/ProyectoCrimen/css/style.css">
 </head>
 <body>
@@ -14,10 +13,10 @@
     <! intro >
     <section id="screen-intro" class="screen active">
       <div class="badge-icon">🚔</div>
-      <span class="eyebrow">Crimen Accidental</span>
+      <span class="eyebrow">Expediente 505</span>
       <span class="eyebrow" style="letter-spacing:.16em;">Capítulo 3</span>
-      <h1>"Última escena. Memoriza bien, esto puede definir todo."</h1>
-      <p class="lead">Estamos cerca del final. Observa con atención e identifica qué objetos había realmente en esta escena.</p>
+      <h1>"Estamos cerca de terminar, memoriza bien los objetos"</h1>
+      <p class="lead">Van al baño, de ahi sacaron las pastillas. memoriza cada detalle.</p>
       <button class="btn" id="btn-start">Comenzar</button>
     </section>
 
@@ -26,33 +25,21 @@
       <div class="timer" id="timer">5</div>
       <span class="eyebrow">Memoriza la escena</span>
       <div class="scene-photo">
-        <!--
-          NOTA: aquí falta subir la imagen de la escena del Nivel 3
-          (no se incluyó en los archivos enviados). Súbela como
-          "escena_3.jpeg" dentro de /ProyectoCrimen/, igual que las
-          escenas 1 y 2.
-        -->
-        <img src="/ProyectoCrimen/escena_3.jpeg" alt="Escena del crimen - Nivel 3">
+        <img src="/ProyectoCrimen/image/escena_3.png" alt="Escena del crimen - Nivel 3">
       </div>
-      <p class="lead" style="font-size:13px;">Observa bien. La imagen desaparecerá cuando el contador llegue a cero.</p>
+      <p class="lead" style="font-size:13px;">Observa bien cada detalle, de eso depende nuestra libertad.</p>
     </section>
 
     <! elegir >
     <section id="screen-selection" class="screen">
       <span class="eyebrow">Interrogatorio</span>
-      <h1 style="font-size:20px;">¿Qué dos objetos había en la escena?</h1>
+      <h1 style="font-size:20px;">¿Qué objetos había en la escena?</h1>
       <div class="grid" id="grid"></div>
       <p class="selection-status" id="selection-status">Selecciona 2 objetos</p>
       <button class="btn" id="btn-confirm" disabled>Confirmar</button>
     </section>
 
     <! resultado >
-    <!--
-      - Si el veredicto es SOSPECHOSO -> "btn-restart" reinicia SOLO
-        este Nivel 3 (vuelve a "screen-intro" de esta misma página).
-      - Si el veredicto es INOCENTE -> "btn-continue" muestra
-        "screen-next", la pantalla final "Caso cerrado" (fin del juego).
-    -->
     <section id="screen-result" class="screen">
       <div class="stamp" id="stamp">INOCENTE</div>
       <div class="report">
@@ -64,15 +51,11 @@
     </section>
 
     <! pantalla final: juego completo >
-    <!--
-      Esta es ahora la pantalla final de TODO el juego (Niveles 1, 2 y 3
-      superados). "Jugar de nuevo" reinicia desde index.html (Nivel 1).
-    -->
     <section id="screen-next" class="screen">
       <div class="badge-icon">🏁</div>
-      <span class="eyebrow">Caso cerrado</span>
+      <span class="eyebrow">Ningun sospechoso</span>
       <h1>¡Has superado el interrogatorio!</h1>
-      <p class="lead">Tu testimonio coincide en las tres escenas. La policía da por cerrado el caso. ¿Quieres volver a intentarlo desde el principio?</p>
+      <p class="lead">No hay evidencia que apunte a ningún sospechoso. Nadie ira a la carcel. Ahora ¿Que hacemos con el cadáver?</p>
       <button class="btn secondary" id="btn-replay">Jugar de nuevo</button>
     </section>
 

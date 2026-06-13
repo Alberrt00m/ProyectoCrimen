@@ -1,43 +1,13 @@
-// ======================================================================
-//  NIVEL 3 — Cambios respecto al Nivel 2 / Nivel 1
-// ======================================================================
-//  1) La escena cambia a "escena_3.jpeg" (ver nivel3.html). Esa imagen
-//     todavía no fue subida, hay que agregarla a /ProyectoCrimen/.
-//
-//  2) SCENE_ITEMS (objetos correctos) vuelve a tener 2 objetos, igual
-//     que el Nivel 1: "algodon" y "pastillas". Como solo hay 2, ambos
-//     se usan siempre en el grid (no se sortean, igual que en el
-//     Nivel 1).
-//
-//  3) DECOY_ITEMS (señuelos) tiene 4 objetos: billetera_marron,
-//     champu_rojo, vino_dragon y reloj_rojo. De esos 4 se sortean 2
-//     para cada partida (igual que el Nivel 2 hacía con sus señuelos).
-//
-//  4) MECÁNICA: el grid sigue mostrando 4 cartas en total
-//     (2 correctas + 2 señuelo) y el jugador elige exactamente 2.
-//     - Si las 2 elegidas son "algodon" y "pastillas" -> DIALOGUE_OK.
-//     - Si al menos 1 de las 2 elegidas es un señuelo -> DIALOGUE_BAD.
-//
-//  5) Este es el ÚLTIMO nivel: "btn-continue" (INOCENTE) muestra
-//     "screen-next" ("Caso cerrado", fin del juego). Desde ahí,
-//     "btn-replay" redirige a /ProyectoCrimen/index.html para reiniciar
-//     todo el juego desde el Nivel 1.
-//     "btn-restart" (SOSPECHOSO) reinicia solo este Nivel 3.
-// ======================================================================
-
-// ---------- Data ----------
-// Objetos que SÍ estaban en la escena (2 en este nivel, como en el Nivel 1)
 const SCENE_ITEMS = [
-  { id:'algodon',   img:'/ProyectoCrimen/algodon.png',   name:'Algodón' },
-  { id:'pastillas', img:'/ProyectoCrimen/pastillas.png', name:'Pastillas' },
+  { id:'algodon',   img:'/ProyectoCrimen/image/algodon.png',   name:'Algodón' },
+  { id:'pastillas', img:'/ProyectoCrimen/image/pastillas.png', name:'Pastillas' },
 ];
 
-// Objetos que NO estaban en la escena (señuelos, 4 en este nivel)
 const DECOY_ITEMS = [
-  { id:'billetera', img:'/ProyectoCrimen/billetera_marron.png', name:'Billetera marrón' },
-  { id:'champu',    img:'/ProyectoCrimen/champu_rojo.png',      name:'Champú rojo' },
-  { id:'vino',      img:'/ProyectoCrimen/vino_dragon.png',      name:'Vino Casa Draconis' },
-  { id:'reloj',     img:'/ProyectoCrimen/reloj_rojo.png',       name:'Reloj rojo' },
+  { id:'billetera', img:'/ProyectoCrimen/image/billetera_marron.png', name:'Billetera marrón' },
+  { id:'champu',    img:'/ProyectoCrimen/image/champu_rojo.png',      name:'Champú rojo' },
+  { id:'vino',      img:'/ProyectoCrimen/image/vino_dragon.png',      name:'Vino Casa Draconis' },
+  { id:'reloj',     img:'/ProyectoCrimen/image/reloj_rojo.png',       name:'Reloj rojo' },
 ];
 
 const DIALOGUE_OK  = '"Veo que todo está en orden, eres inocente por ahora... No salgas de la casa hasta que termine el interrogatorio."';

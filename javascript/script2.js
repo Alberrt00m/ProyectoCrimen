@@ -1,36 +1,14 @@
-// ======================================================================
-//  NIVEL 2 — Ahora enlaza con el Nivel 3 (en vez de ser el final)
-// ======================================================================
-//  Cambios respecto a la versión anterior de este archivo:
-//
-//  1) Se quitó "next" del objeto `screens`, porque "screen-next"
-//     (la pantalla "Caso cerrado") ya NO existe en nivel2.html.
-//     Ese rol de pantalla final ahora lo cumple nivel3.html.
-//
-//  2) "btn-continue" (veredicto INOCENTE) ya no hace showScreen('next'),
-//     sino que redirige a /ProyectoCrimen/nivel3.html.
-//
-//  3) "btn-restart" (veredicto SOSPECHOSO) sigue igual: reinicia solo
-//     este Nivel 2 con resetGame() -> showScreen('intro').
-//
-//  El resto de la lógica (datos, mecánica de selección, evaluación)
-//  NO cambia respecto a la versión anterior del Nivel 2.
-// ======================================================================
-
-// ---------- Data ----------
-// Objetos que SÍ estaban en la escena (3 en este nivel)
 const SCENE_ITEMS = [
-  { id:'vaso',    img:'/ProyectoCrimen/vaso_añejo.png',     name:'Vaso añejo' },
-  { id:'pato',    img:'/ProyectoCrimen/pato_inflable.png',  name:'Pato inflable' },
-  { id:'maceta',  img:'/ProyectoCrimen/maceta_azul.png',    name:'Maceta azul' },
+  { id:'vaso',    img:'/ProyectoCrimen/image/vaso_añejo.png',     name:'Vaso añejo' },
+  { id:'pato',    img:'/ProyectoCrimen/image/pato_inflable.png',  name:'Pato inflable' },
+  { id:'maceta',  img:'/ProyectoCrimen/image/maceta_azul.png',    name:'Maceta azul' },
 ];
 
-// Objetos que NO estaban en la escena (señuelos, 4 en este nivel)
 const DECOY_ITEMS = [
-  { id:'blusa',      img:'/ProyectoCrimen/blusa_verde.png',       name:'Blusa verde' },
-  { id:'cargador',   img:'/ProyectoCrimen/cargador_negro.png',    name:'Cargador negro' },
-  { id:'cuchillo',   img:'/ProyectoCrimen/cuchillo_raro.png',     name:'Cuchillo raro' },
-  { id:'candelabro', img:'/ProyectoCrimen/candelabro_bronce.png', name:'Candelabro de bronce' },
+  { id:'blusa',      img:'/ProyectoCrimen/image/blusa_verde.png',       name:'Blusa verde' },
+  { id:'cargador',   img:'/ProyectoCrimen/image/cargador_negro.png',    name:'Cargador negro' },
+  { id:'cuchillo',   img:'/ProyectoCrimen/image/cuchillo_raro.png',     name:'Cuchillo raro' },
+  { id:'candelabro', img:'/ProyectoCrimen/image/candelabro_bronce.png', name:'Candelabro de bronce' },
 ];
 
 const DIALOGUE_OK  = '"Veo que todo está en orden, eres inocente por ahora... No salgas de la casa hasta que termine el interrogatorio."';

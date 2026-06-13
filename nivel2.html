@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crimen Accidental - Nivel 2</title>
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<!-- Se reutiliza el mismo style.css de los demás niveles -->
 <link rel="stylesheet" href="/ProyectoCrimen/css/style.css">
 </head>
 <body>
@@ -14,10 +13,10 @@
     <! intro >
     <section id="screen-intro" class="screen active">
       <div class="badge-icon">🚔</div>
-      <span class="eyebrow">Crimen Accidental</span>
+      <span class="eyebrow">Expediente 505</span>
       <span class="eyebrow" style="letter-spacing:.16em;">Capítulo 2</span>
       <h1>"El interrogatorio continúa. Memoriza los objetos de la nueva escena."</h1>
-      <p class="lead">La investigación sigue. Observa con atención e identifica qué objetos había realmente en esta escena.</p>
+      <p class="lead">El interrogatorio continúa. Memoriza los objetos de la nueva escena para que nadie sospeche de ti.</p>
       <button class="btn" id="btn-start">Comenzar</button>
     </section>
 
@@ -26,31 +25,21 @@
       <div class="timer" id="timer">5</div>
       <span class="eyebrow">Memoriza la escena</span>
       <div class="scene-photo">
-        <img src="/ProyectoCrimen/escena_2.jpeg" alt="Escena del crimen - Nivel 2">
+        <img src="/ProyectoCrimen/image/escena_2.jpeg" alt="Escena del crimen - Nivel 2">
       </div>
-      <p class="lead" style="font-size:13px;">Observa bien. La imagen desaparecerá cuando el contador llegue a cero.</p>
+      <p class="lead" style="font-size:13px;">Observa bien cada detalle, de eso depende nuestra libertad.</p>
     </section>
 
     <! elegir >
     <section id="screen-selection" class="screen">
       <span class="eyebrow">Interrogatorio</span>
-      <h1 style="font-size:20px;">¿Qué dos objetos había en la escena?</h1>
+      <h1 style="font-size:20px;">¿Qué objetos había en la escena?</h1>
       <div class="grid" id="grid"></div>
       <p class="selection-status" id="selection-status">Selecciona 2 objetos</p>
       <button class="btn" id="btn-confirm" disabled>Confirmar</button>
     </section>
 
     <! resultado >
-    <!--
-      CAMBIO PARA ENLAZAR NIVEL 2 -> NIVEL 3:
-      - Ya NO existe una pantalla "screen-next" dentro de este archivo
-        (antes era la pantalla "Caso cerrado", ahora ese rol lo cumple
-        el Nivel 3).
-      - "btn-continue" (veredicto INOCENTE) ahora redirige directamente
-        a /ProyectoCrimen/nivel3.html desde script2.js.
-      - "btn-restart" (veredicto SOSPECHOSO) sigue reiniciando este
-        mismo Nivel 2 (vuelve a "screen-intro" de esta página).
-    -->
     <section id="screen-result" class="screen">
       <div class="stamp" id="stamp">INOCENTE</div>
       <div class="report">

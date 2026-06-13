@@ -1,39 +1,17 @@
-// ======================================================================
-//  NIVEL 1 — Conexión con el Nivel 2
-// ======================================================================
-//  Antes, al ganar (INOCENTE), el botón "Continuar" mostraba una
-//  pantalla interna ("screen-next") dentro del mismo archivo.
-//
-//  Ahora, al ganar, "Continuar" te lleva directamente al Nivel 2
-//  (nivel2.html), que es un archivo/página aparte. Por eso:
-//    - Se quitó "next" del objeto `screens` (esa pantalla ya no existe
-//      en index.html).
-//    - El listener de btnContinue ya no llama a showScreen('next'),
-//      sino que hace window.location.href hacia nivel2.html.
-//
-//  Si el veredicto es SOSPECHOSO, todo sigue igual: "Volver a empezar"
-//  reinicia este mismo Nivel 1.
-// ======================================================================
-
-// ---------- Data ----------
-// Objetos que SÍ estaban en la escena
 const SCENE_ITEMS = [
-  { id:'libro',   img:'/ProyectoCrimen/libro_morado.png',   name:'Libro morado' },
-  { id:'lampara', img:'/ProyectoCrimen/lampara_azul.png',    name:'Lampara azul' },
+  { id:'libro',   img:'/ProyectoCrimen/image/libro_morado.png',   name:'Libro morado' },
+  { id:'lampara', img:'/ProyectoCrimen/image/lampara_azul.png',    name:'Lampara azul' },
 ];
-
-// Objetos que NO estaban en la escena (señuelos)
 const DECOY_ITEMS = [
-  { id:'almohada', img:'/ProyectoCrimen/almohada_morada.png', name:'Almohada morada' },
-  { id:'toalla',   img:'/ProyectoCrimen/toalla_rosa.png',     name:'Toalla rosa' },
-  { id:'telefono', img:'/ProyectoCrimen/telefono_roto.png',   name:'Teléfono roto' },
+  { id:'almohada', img:'/ProyectoCrimen/image/almohada_morada.png', name:'Almohada morada' },
+  { id:'toalla',   img:'/ProyectoCrimen/image/toalla_rosa.png',     name:'Toalla rosa' },
+  { id:'telefono', img:'/ProyectoCrimen/image/telefono_roto.png',   name:'Teléfono roto' },
+  {id:'copa de martini', img:'/ProyectoCrimen/image/copa_martini.png', name:'Copa de martini' },
 ];
 
 const DIALOGUE_OK  = '"Veo que todo está en orden, eres inocente por ahora... No salgas de la casa hasta que termine el interrogatorio."';
 const DIALOGUE_BAD = '"Algo no cuadra, ahora eres sospechoso. Todos en esta casa vendrán conmigo a la estación."';
 
-// ---------- Elements ----------
-// CAMBIO: ya no se incluye "next" porque "screen-next" se eliminó de index.html
 const screens = {
   intro: document.getElementById('screen-intro'),
   memorize: document.getElementById('screen-memorize'),

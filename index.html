@@ -12,10 +12,10 @@
     <! intro >
     <section id="screen-intro" class="screen active">
       <div class="badge-icon">🚔</div>
-      <span class="eyebrow">Crimen Accidental</span>
+      <span class="eyebrow">Expediente 505</span>
       <span class="eyebrow" style="letter-spacing:.16em;">Hecho por BERRT</span>
       <h1>"La policía viene pronto. Memoriza los objetos de la escena."</h1>
-      <p class="lead">Hubo un crimen, nadie se ira a la carcel si nos ayudamos. Identifica qué objetos había realmente en la escena.</p>
+      <p class="lead">Alguien murio por intoxicación. Si nos ayudamos, nadie ira a la carcel. Memoriza los objetos.</p>
       <button class="btn" id="btn-start">Comenzar</button>
     </section>
 
@@ -24,30 +24,21 @@
       <div class="timer" id="timer">5</div>
       <span class="eyebrow">Memoriza la escena</span>
       <div class="scene-photo">
-        <img src="/ProyectoCrimen/escena_1.jpeg" alt="Escena del crimen">
+        <img src="/ProyectoCrimen/image/escena_1.jpeg" alt="Escena del crimen">
       </div>
-      <p class="lead" style="font-size:13px;">Observa bien. La imagen desaparecerá cuando el contador llegue a cero.</p>
+      <p class="lead" style="font-size:13px;">Observa bien cada detalle, de eso depende nuestra libertad.</p>
     </section>
 
     <! elegir >
     <section id="screen-selection" class="screen">
       <span class="eyebrow">Interrogatorio</span>
-      <h1 style="font-size:20px;">¿Qué dos objetos había en la escena?</h1>
+      <h1 style="font-size:20px;">¿Qué objetos había en la escena?</h1>
       <div class="grid" id="grid"></div>
       <p class="selection-status" id="selection-status">Selecciona 2 objetos</p>
       <button class="btn" id="btn-confirm" disabled>Confirmar</button>
     </section>
 
     <! resultado >
-    <!--
-      CAMBIO PARA ENLAZAR NIVEL 1 -> NIVEL 2:
-      - Ya NO existe una pantalla "screen-next" dentro de este archivo.
-      - El botón "btn-continue" (cuando el veredicto es INOCENTE) ahora
-        redirige directamente a /ProyectoCrimen/nivel2.html desde script.js,
-        en lugar de mostrar una pantalla interna.
-      - El botón "btn-restart" (cuando el veredicto es SOSPECHOSO) sigue
-        reiniciando este mismo Nivel 1 (vuelve a "screen-intro").
-    -->
     <section id="screen-result" class="screen">
       <div class="stamp" id="stamp">INOCENTE</div>
       <div class="report">
