@@ -1,284 +1,353 @@
-:root{
-    --board:#5b4634;
-    --board-dark:#352a1d;
-    --cream:#f3e8d4;
-    --cream-dark:#e3d4b6;
-    --ink:#2b2218;
-    --accent:#e0a83f;
-    --danger:#b8463a;
-    --success:#5c8a62;
-    --line:#7a6347;
-  }
-  *{ box-sizing:border-box; margin:0; padding:0; }
-  html,body{ height:100%; }
-  body{
-    min-height:100vh;
-    display:flex; align-items:center; justify-content:center;
-    background: radial-gradient(ellipse at center, #1d2530 0%, #090c10 100%);
-    font-family:'Inter', sans-serif;
-    padding:24px;
-    color:var(--ink);
+:root {
+  --board: #5b4634;
+  --board-dark: #352a1d;
+  --cream: #f3e8d4;
+  --cream-dark: #e3d4b6;
+  --ink: #2b2218;
+  --accent: #e0a83f;
+  --danger: #b8463a;
+  --success: #5c8a62;
+  --line: #7a6347;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #1d2530 0%, #090c10 100%);
+  font-family: 'Inter', sans-serif;
+  padding: 24px;
+  color: var(--ink);
+}
+
+/* ── Frame ── */
+.frame {
+  position: relative;
+  width: 580px;
+  max-width: 100%;
+  height: min(96vh, 860px);
+  background: var(--board);
+  border: 14px solid var(--board-dark);
+  border-radius: 8px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.65), inset 0 0 0 2px rgba(255,255,255,.05);
+  overflow: hidden;
+  background-image:
+    radial-gradient(circle at 18% 28%, rgba(255,255,255,.035) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 68% 64%, rgba(255,255,255,.03)  1.5px, transparent 1.5px),
+    radial-gradient(circle at 42% 85%, rgba(255,255,255,.025) 1.5px, transparent 1.5px);
+  background-size: 46px 46px, 64px 64px, 38px 38px;
+}
+
+/* ── Screens ── */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px;
+  text-align: center;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.screen.active {
+  display: flex;
+  animation: fadeIn .5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Typography ── */
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+h1, h2, .typewriter {
+  font-family: 'Special Elite', monospace;
+}
+
+h1 {
+  color: var(--cream);
+  font-size: 24px;
+  line-height: 1.35;
+  text-shadow: 0 2px 0 rgba(0,0,0,.35);
+}
+
+.lead {
+  color: var(--cream-dark);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 340px;
+}
+
+/* ── Buttons ── */
+.btn {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  background: var(--accent);
+  color: #2b1d05;
+  box-shadow: 0 4px 0 rgba(0,0,0,.35);
+  transition: transform .08s ease, box-shadow .08s ease, opacity .2s ease;
+}
+
+.btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 rgba(0,0,0,.35);
+}
+
+.btn:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+.btn.secondary {
+  background: transparent;
+  color: var(--cream);
+  border: 2px solid var(--cream-dark);
+  box-shadow: none;
+}
+
+.btn.secondary:active {
+  transform: translateY(2px);
+}
+
+.btn.danger {
+  background: var(--danger);
+  color: var(--cream);
+}
+
+/* ── Intro: badge ── */
+.badge-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--accent);
+  border-radius: 50%;
+  font-size: 26px;
+  color: var(--accent);
+  box-shadow: 0 0 0 6px rgba(224,168,63,.08);
+}
+
+/* ── Memorize: timer ── */
+.timer {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 3px solid var(--board-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Special Elite', monospace;
+  font-size: 22px;
+  color: var(--ink);
+  box-shadow: 0 4px 10px rgba(0,0,0,.4);
+  z-index: 5;
+}
+
+.timer::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 2px dashed var(--line);
+  opacity: .5;
+}
+
+/* ── Memorize: polaroid ── */
+.scene-photo {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: var(--cream);
+  border-radius: 2px;
+  padding: 10px 10px 26px;
+  transform: rotate(-1.2deg);
+  box-shadow: 0 10px 24px rgba(0,0,0,.45);
+}
+
+.scene-photo::after {
+  content: 'ESCENA — NO TOCAR';
+  position: absolute;
+  bottom: 7px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: .15em;
+  color: var(--line);
+}
+
+.scene-photo img {
+  display: block;
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  border-radius: 1px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
+}
+
+/* ── Selection: grid & cards ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.card {
+  position: relative;
+  background: var(--cream);
+  border-radius: 3px;
+  padding: 14px 8px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  border: 3px solid transparent;
+  box-shadow: 0 6px 14px rgba(0,0,0,.35);
+  transition: transform .12s ease, border-color .12s ease;
+  transform: rotate(var(--rot, 0deg));
+}
+
+.card:hover {
+  transform: rotate(var(--rot, 0deg)) translateY(-3px);
+}
+
+.card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(224,168,63,.35), 0 6px 14px rgba(0,0,0,.35);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--danger);
+  box-shadow: 0 1px 2px rgba(0,0,0,.4);
+}
+
+.card .thumb {
+  width: 100%;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card .thumb img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 4px rgba(0,0,0,.25));
+}
+
+.card .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--line);
+}
+
+.selection-status {
+  color: var(--cream-dark);
+  font-size: 13px;
+  letter-spacing: .04em;
+}
+
+/* ── Result: stamp & report ── */
+.stamp {
+  font-family: 'Special Elite', monospace;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  padding: 10px 22px;
+  border: 4px solid currentColor;
+  border-radius: 4px;
+  transform: rotate(-6deg);
+  text-transform: uppercase;
+}
+
+.stamp.ok  { color: var(--success); }
+.stamp.bad { color: var(--danger); }
+
+.report {
+  background: var(--cream);
+  color: var(--ink);
+  border-radius: 2px;
+  padding: 18px;
+  width: 100%;
+  max-width: 340px;
+  text-align: left;
+  box-shadow: 0 8px 20px rgba(0,0,0,.4);
+}
+
+.report .who {
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--line);
+  margin-bottom: 8px;
+}
+
+.report p {
+  font-family: 'Special Elite', monospace;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ── Responsive ── */
+@media (max-width: 420px) {
+  .frame {
+    border-width: 8px;
+    border-radius: 4px;
   }
 
-  /* ===== Frame ===== */
-  /* 📐 TAMAÑO DEL MARCO GENERAL
-     Ajusta width para cambiar el ancho de toda la tarjeta.
-     Ajusta height (o el segundo valor de min()) para cambiar la altura máxima.
-     Valores actuales: 580px ancho, hasta 860px de alto (o 96vh en pantallas pequeñas). */
-  .frame{
-    position:relative;
-    width:580px;
-    max-width:100%;
-    height:min(96vh, 860px);
-    background: var(--board);
-    border:14px solid var(--board-dark);
-    border-radius:8px;
-    box-shadow: 0 24px 60px rgba(0,0,0,.65), inset 0 0 0 2px rgba(255,255,255,.05);
-    overflow:hidden;
-    background-image:
-      radial-gradient(circle at 18% 28%, rgba(255,255,255,.035) 1.5px, transparent 1.5px),
-      radial-gradient(circle at 68% 64%, rgba(255,255,255,.03) 1.5px, transparent 1.5px),
-      radial-gradient(circle at 42% 85%, rgba(255,255,255,.025) 1.5px, transparent 1.5px);
-    background-size: 46px 46px, 64px 64px, 38px 38px;
-  }
+  h1 { font-size: 20px; }
 
-  /* ===== Screens ===== */
-  /* 📐 ESPACIADO INTERNO DE CADA PANTALLA
-     padding: espacio entre el borde del marco y el contenido.
-     gap: separación vertical entre elementos dentro de la pantalla.
-     Bajar estos valores da más espacio a la foto de escena. */
-  .screen{
-    position:absolute; inset:0;
-    display:none;
-    flex-direction:column;
-    align-items:center; justify-content:center;
-    padding:16px 20px;
-    text-align:center;
-    gap:8px;
-    overflow-y:auto;
-  }
-  .screen.active{ display:flex; animation: fadeIn .5s ease; }
-  @keyframes fadeIn{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:translateY(0);} }
+  .scene-photo img { height: 220px; }
 
-  .eyebrow{
-    font-family:'Inter', sans-serif;
-    font-size:11px;
-    letter-spacing:.28em;
-    text-transform:uppercase;
-    color:var(--accent);
-    font-weight:700;
-  }
+  .grid { max-width: 280px; gap: 10px; }
 
-  h1, h2, .typewriter{
-    font-family:'Special Elite', monospace;
-  }
-
-  h1{
-    color:var(--cream);
-    font-size:24px;
-    line-height:1.35;
-    text-shadow: 0 2px 0 rgba(0,0,0,.35);
-  }
-
-  .lead{
-    color:var(--cream-dark);
-    font-size:14px;
-    line-height:1.6;
-    max-width:340px;
-  }
-
-  /* ===== Buttons ===== */
-  .btn{
-    font-family:'Inter', sans-serif;
-    font-weight:700;
-    font-size:14px;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-    padding:14px 28px;
-    border:none;
-    border-radius:3px;
-    cursor:pointer;
-    background:var(--accent);
-    color:#2b1d05;
-    box-shadow: 0 4px 0 rgba(0,0,0,.35);
-    transition: transform .08s ease, box-shadow .08s ease, opacity .2s ease;
-  }
-  .btn:active{ transform: translateY(3px); box-shadow:0 1px 0 rgba(0,0,0,.35); }
-  .btn:disabled{ opacity:.35; cursor:not-allowed; }
-  .btn.secondary{
-    background:transparent;
-    color:var(--cream);
-    border:2px solid var(--cream-dark);
-    box-shadow:none;
-  }
-  .btn.secondary:active{ transform: translateY(2px); }
-  .btn.danger{ background: var(--danger); color:var(--cream); }
-
-  /* ===== Screen 1: intro ===== */
-  .badge-icon{
-    width:60px; height:60px;
-    display:flex; align-items:center; justify-content:center;
-    border:3px solid var(--accent);
-    border-radius:50%;
-    font-size:26px;
-    color:var(--accent);
-    box-shadow: 0 0 0 6px rgba(224,168,63,.08);
-  }
-
-  /* ===== Screen 2: memorize ===== */
-  .timer{
-    position:absolute;
-    top:14px; right:14px;
-    width:54px; height:54px;
-    border-radius:50%;
-    background: var(--cream);
-    border:3px solid var(--board-dark);
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Special Elite', monospace;
-    font-size:22px;
-    color:var(--ink);
-    box-shadow: 0 4px 10px rgba(0,0,0,.4);
-    z-index:5;
-  }
-  .timer::before{
-    content:'';
-    position:absolute;
-    inset:6px;
-    border-radius:50%;
-    border:2px dashed var(--line);
-    opacity:.5;
-  }
-
-  /* 📐 FOTO DE ESCENA (pantalla "Memoriza")
-     max-width: ancho máximo del marco tipo polaroid. Sube para hacerlo más ancho.
-     padding-bottom (el último valor de padding): espacio bajo la imagen para el texto
-       "ESCENA — NO TOCAR". Baja si quieres menos margen inferior.
-     transform rotate: inclinación decorativa del polaroid. Pon rotate(0deg) para quitar.
-     --scene-img-height (en .scene-photo img): altura fija de la imagen.
-       Sube este valor para hacer la foto más alta y visible. */
-  .scene-photo{
-    position:relative;
-    width:100%;
-    max-width:520px;
-    background: var(--cream);
-    border-radius:2px;
-    padding:10px 10px 26px 10px;
-    transform: rotate(-1.2deg);
-    box-shadow: 0 10px 24px rgba(0,0,0,.45);
-  }
-  .scene-photo::after{
-    content:'ESCENA — NO TOCAR';
-    position:absolute;
-    bottom:7px; left:0; right:0;
-    text-align:center;
-    font-family:'Special Elite', monospace;
-    font-size:11px;
-    letter-spacing:.15em;
-    color:var(--line);
-  }
-  /* 📐 IMAGEN DENTRO DEL POLAROID
-     height: altura fija de la foto. Sube para ver más detalle vertical.
-     object-fit:cover recorta si la imagen no tiene la misma proporción. */
-  .scene-photo img{
-    display:block;
-    width:100%;
-    height:340px;
-    object-fit:cover;
-    border-radius:1px;
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
-  }
-
-  /* ===== Screen 3: selection ===== */
-  .grid{
-    display:grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap:14px;
-    width:100%;
-    max-width:320px;
-  }
-  .card{
-    position:relative;
-    background:var(--cream);
-    border-radius:3px;
-    padding:14px 8px 16px;
-    display:flex; flex-direction:column; align-items:center; gap:6px;
-    cursor:pointer;
-    border:3px solid transparent;
-    box-shadow: 0 6px 14px rgba(0,0,0,.35);
-    transition: transform .12s ease, border-color .12s ease;
-    transform: rotate(var(--rot, 0deg));
-  }
-  .card:hover{ transform: rotate(var(--rot,0deg)) translateY(-3px); }
-  .card.selected{
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(224,168,63,.35), 0 6px 14px rgba(0,0,0,.35);
-  }
-  .card .thumb{
-    width:100%;
-    height:84px;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .card .thumb img{
-    max-width:100%;
-    max-height:100%;
-    object-fit:contain;
-    filter: drop-shadow(0 4px 4px rgba(0,0,0,.25));
-  }
-  .card .label{
-    font-family:'Special Elite', monospace;
-    font-size:11px;
-    letter-spacing:.06em;
-    color:var(--line);
-  }
-  .card::before{
-    content:'';
-    position:absolute; top:-6px; left:50%; transform:translateX(-50%);
-    width:10px; height:10px; border-radius:50%;
-    background: var(--danger);
-    box-shadow: 0 1px 2px rgba(0,0,0,.4);
-  }
-
-  .selection-status{
-    color:var(--cream-dark);
-    font-size:13px;
-    letter-spacing:.04em;
-  }
-
-  /* ===== Screen 4: result / dialogue ===== */
-  .stamp{
-    font-family:'Special Elite', monospace;
-    font-size:26px;
-    font-weight:700;
-    letter-spacing:.12em;
-    padding:10px 22px;
-    border:4px solid currentColor;
-    border-radius:4px;
-    transform: rotate(-6deg);
-    text-transform:uppercase;
-  }
-  .stamp.ok{ color:var(--success); }
-  .stamp.bad{ color:var(--danger); }
-
-  .report{
-    background: var(--cream);
-    color:var(--ink);
-    border-radius:2px;
-    padding:18px;
-    width:100%;
-    max-width:340px;
-    text-align:left;
-    box-shadow: 0 8px 20px rgba(0,0,0,.4);
-  }
-  .report .who{
-    font-family:'Inter', sans-serif;
-    font-size:11px;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    color:var(--line);
-    margin-bottom:8px;
-  }
-  .report p{
-    font-family:'Special Elite', monospace;
-    font-size:15px;
-    line-height:1.65;
-  }
+  .card .thumb { height: 68px; }
+}

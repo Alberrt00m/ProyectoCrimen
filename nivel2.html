@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crimen Accidental - Nivel 2</title>
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/ProyectoCrimen/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crimen Accidental — Nivel 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="frame">
 
-    <! intro >
     <section id="screen-intro" class="screen active">
       <div class="badge-icon">🚔</div>
       <span class="eyebrow">Expediente 505</span>
@@ -20,17 +19,15 @@
       <button class="btn" id="btn-start">Comenzar</button>
     </section>
 
-    <! memorizar >
     <section id="screen-memorize" class="screen">
       <div class="timer" id="timer">5</div>
       <span class="eyebrow">Memoriza la escena</span>
       <div class="scene-photo">
-        <img src="/ProyectoCrimen/image/escena_2.png" alt="Escena del crimen - Nivel 2">
+        <img src="image/escena_2.png" alt="Escena del crimen — Nivel 2">
       </div>
       <p class="lead" style="font-size:13px;">Observa bien cada detalle; de eso depende nuestra libertad.</p>
     </section>
 
-    <! elegir >
     <section id="screen-selection" class="screen">
       <span class="eyebrow">Interrogatorio</span>
       <h1 style="font-size:20px;">¿Qué objetos había en la escena?</h1>
@@ -39,7 +36,6 @@
       <button class="btn" id="btn-confirm" disabled>Confirmar</button>
     </section>
 
-    <! resultado >
     <section id="screen-result" class="screen">
       <div class="stamp" id="stamp">INOCENTE</div>
       <div class="report">
@@ -51,6 +47,7 @@
     </section>
 
   </div>
-  <script src="/ProyectoCrimen/javascript/script2.js"></script>
+  <script src="javascript/game.js"></script>
+  <script src="javascript/script2.js"></script>
 </body>
 </html>

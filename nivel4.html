@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crimen Accidental - Nivel 4</title>
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/ProyectoCrimen/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crimen Accidental — Nivel 4</title>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="frame">
 
-    <!-- INTRO -->
     <section id="screen-intro" class="screen active">
       <div class="badge-icon">🚔</div>
       <span class="eyebrow">Crimen Accidental</span>
@@ -20,17 +19,15 @@
       <button class="btn" id="btn-start">Comenzar</button>
     </section>
 
-    <!-- MEMORIZAR -->
     <section id="screen-memorize" class="screen">
       <div class="timer" id="timer">5</div>
       <span class="eyebrow">Memoriza la escena</span>
       <div class="scene-photo">
-        <img src="/ProyectoCrimen/image/escena_4.png" alt="Escena del crimen - Nivel 4">
+        <img src="image/escena_4.png" alt="Escena del crimen — Nivel 4">
       </div>
       <p class="lead" style="font-size:13px;">Observa bien. La imagen desaparecerá cuando el contador llegue a cero.</p>
     </section>
 
-    <!-- ELEGIR -->
     <section id="screen-selection" class="screen">
       <span class="eyebrow">Interrogatorio</span>
       <h1 style="font-size:20px;">¿Qué dos objetos había en la escena?</h1>
@@ -39,11 +36,6 @@
       <button class="btn" id="btn-confirm" disabled>Confirmar</button>
     </section>
 
-    <!-- RESULTADO -->
-    <!--
-      - INOCENTE -> "btn-continue" muestra "screen-next" (pantalla final).
-      - SOSPECHOSO -> "btn-restart" reinicia solo este Nivel 4.
-    -->
     <section id="screen-result" class="screen">
       <div class="stamp" id="stamp">INOCENTE</div>
       <div class="report">
@@ -54,11 +46,6 @@
       <button class="btn danger" id="btn-restart" style="display:none;">Volver a empezar</button>
     </section>
 
-    <!-- PANTALLA FINAL: JUEGO COMPLETO -->
-    <!--
-      Esta es la pantalla final de TODO el juego (Niveles 1, 2, 3 y 4
-      superados). "Jugar de nuevo" reinicia desde index.html (Nivel 1).
-    -->
     <section id="screen-next" class="screen">
       <div class="badge-icon">🏁</div>
       <span class="eyebrow">Caso cerrado</span>
@@ -68,6 +55,7 @@
     </section>
 
   </div>
-  <script src="/ProyectoCrimen/javascript/script4.js"></script>
+  <script src="javascript/game.js"></script>
+  <script src="javascript/script4.js"></script>
 </body>
 </html>
