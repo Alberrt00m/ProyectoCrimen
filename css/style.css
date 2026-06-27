@@ -422,6 +422,91 @@ h1 {
   padding-top: 52px;
 }
 
+/* ── Officer image ── */
+.officer-wrap {
+  position: relative;
+  width: 130px;
+  flex-shrink: 0;
+}
+
+.officer-wrap img {
+  width: 100%;
+  display: block;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.45));
+  transition: opacity .3s ease, transform .3s ease;
+}
+
+/* Selection screen layout with officer */
+#screen-selection {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 52px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.selection-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Result screen with officer side by side */
+#screen-result {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.result-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Warning screen with officer */
+.warning-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.screen-warning {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+/* Officer entry animation */
+@keyframes officerSlideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.officer-wrap.animate-in img {
+  animation: officerSlideIn .4s ease forwards;
+}
+
 /* ── Responsive ── */
 @media (max-width: 420px) {
   .frame {
@@ -436,4 +521,13 @@ h1 {
   .grid { max-width: 280px; gap: 10px; }
 
   .card .thumb { height: 68px; }
+
+  .officer-wrap { width: 80px; }
+
+  #screen-selection,
+  #screen-result,
+  .screen-warning {
+    flex-direction: column;
+    align-items: center;
+  }
 }

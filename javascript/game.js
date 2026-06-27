@@ -76,16 +76,61 @@ function injectWarningScreen() {
   div.id = 'screen-warning';
   div.className = 'screen screen-warning';
   div.innerHTML = `
-    <div class="warning-badge">⚠️</div>
-    <span class="warning-title">Investigación en riesgo</span>
-    <div class="report" style="text-align:center;">
-      <div class="who">Agente al mando</div>
-      <p id="warning-text"></p>
+    <div class="officer-wrap animate-in" id="officer-warning">
+      <img src="image/policia_molesto.png" alt="Policía molesto">
     </div>
-    <p class="lives-label" style="color:var(--danger); margin-top:4px;">— ÚLTIMA OPORTUNIDAD —</p>
-    <button class="btn" id="btn-warning-continue">Continuar de todos modos</button>
+    <div class="warning-content">
+      <span class="warning-title">Investigación en riesgo</span>
+      <div class="report" style="text-align:center;">
+        <div class="who">Agente al mando</div>
+        <p id="warning-text"></p>
+      </div>
+      <p class="lives-label" style="color:var(--danger); margin-top:4px;">— ÚLTIMA OPORTUNIDAD —</p>
+      <button class="btn" id="btn-warning-continue">Continuar de todos modos</button>
+    </div>
   `;
   frame.appendChild(div);
+}
+
+// ── Officer image helper ────────────────────────────────────────────────────
+function restructureSelectionScreen() {
+  const screen = document.getElementById('screen-selection');
+  if (!screen || screen.dataset.restructured) return;
+  screen.dataset.restructured = 'true';
+
+  // Wrap existing children in .selection-content
+  const content = document.createElement('div');
+  content.className = 'selection-content';
+  while (screen.firstChild) content.appendChild(screen.firstChild);
+
+  // Officer image
+  const officerWrap = document.createElement('div');
+  officerWrap.className = 'officer-wrap';
+  officerWrap.id = 'officer-selection';
+  officerWrap.innerHTML = `<img src="image/Policia_tranquilo.png" alt="Policía">`;
+
+  screen.appendChild(officerWrap);
+  screen.appendChild(content);
+}
+
+function restructureResultScreen() {
+  const screen = document.getElementById('screen-result');
+  if (!screen || screen.dataset.restructured) return;
+  screen.dataset.restructured = 'true';
+
+  // Wrap existing children in .result-content
+  const content = document.createElement('div');
+  content.className = 'result-content';
+  while (screen.firstChild) content.appendChild(screen.firstChild);
+
+  // Officer image (placeholder src, will be set on evaluate)
+  const officerWrap = document.createElement('div');
+  officerWrap.className = 'officer-wrap animate-in';
+  officerWrap.id = 'officer-result';
+  officerWrap.innerHTML = `<img id="officer-result-img" src="" alt="Policía">`;
+
+  screen.appendChild(officerWrap);
+  screen.appendChild(content);
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────
@@ -105,9 +150,11 @@ function initLevel(cfg) {
   let countdownInterval = null;
   let pendingSuccessAction = null; // stored for warning → continue flow
 
-  // Inject lives UI
+  // Inject lives UI and restructure screens for officer images
   injectLivesBar();
   injectWarningScreen();
+  restructureSelectionScreen();
+  restructureResultScreen();
 
   const el = {
     screens: {
@@ -199,6 +246,21 @@ function initLevel(cfg) {
   }
 
   // ── Evaluation ─────────────────────────────────────────────────────────
+  function setOfficerResult(mood) {
+    const img = document.getElementById('officer-result-img');
+    const wrap = document.getElementById('officer-result');
+    if (!img) return;
+    img.src = mood === 'ok'
+      ? 'image/Policia_tranquilo.png'
+      : 'image/policia_molesto.png';
+    // Re-trigger animation
+    if (wrap) {
+      wrap.classList.remove('animate-in');
+      void wrap.offsetWidth; // force reflow
+      wrap.classList.add('animate-in');
+    }
+  }
+
   function evaluate() {
     const correct = selected.every(id => correctIds.includes(id));
 
@@ -209,6 +271,7 @@ function initLevel(cfg) {
       el.resultText.textContent = DIALOGUE_OK;
       el.btnContinue.style.display = 'inline-block';
       el.btnRestart.style.display  = 'none';
+      setOfficerResult('ok');
       showScreen('result');
       return;
     }
@@ -230,6 +293,7 @@ function initLevel(cfg) {
       el.resultText.textContent = DIALOGUE_BAD;
       el.btnContinue.style.display = 'none';
       el.btnRestart.style.display  = 'inline-block';
+      setOfficerResult('bad');
       showScreen('result');
     }
   }
