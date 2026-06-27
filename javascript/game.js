@@ -1,6 +1,26 @@
-const DIALOGUE_OK  = '"Veo que todo está en orden, eres inocente por ahora... No salgas de la casa hasta que termine el interrogatorio."';
-const DIALOGUE_BAD = '"Algo no cuadra, ahora eres sospechoso. Todos en esta casa vendrán conmigo a la estación."';
+// ── Dialogues ──────────────────────────────────────────────────────────────
+const DIALOGUE_OK      = '"Veo que todo está en orden, eres inocente por ahora... No salgas de la casa hasta que termine el interrogatorio."';
+const DIALOGUE_WARNING = '"Hay algo que no cuadra en tu historia. Te doy el beneficio de la duda esta vez, pero te seguiremos vigilando de cerca."';
+const DIALOGUE_BAD     = '"Algo no cuadra, ahora eres sospechoso. Todos en esta casa vendrán conmigo a la estación."';
 
+// ── Lives system ───────────────────────────────────────────────────────────
+const LIVES_KEY = 'crimen_accidental_lives';
+const MAX_LIVES = 2;
+
+function getLives() {
+  const v = sessionStorage.getItem(LIVES_KEY);
+  return v === null ? MAX_LIVES : parseInt(v, 10);
+}
+
+function setLives(n) {
+  sessionStorage.setItem(LIVES_KEY, String(n));
+}
+
+function resetLives() {
+  sessionStorage.setItem(LIVES_KEY, String(MAX_LIVES));
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────────
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -10,6 +30,65 @@ function shuffle(arr) {
   return a;
 }
 
+// ── Lives bar (injected into every frame) ──────────────────────────────────
+function injectLivesBar() {
+  const frame = document.querySelector('.frame');
+  if (!frame || document.getElementById('lives-bar')) return;
+
+  const bar = document.createElement('div');
+  bar.id = 'lives-bar';
+  bar.className = 'lives-bar';
+  bar.innerHTML = `
+    <span class="lives-label">Coartada</span>
+    <div class="lives-icons" id="lives-icons"></div>
+  `;
+  frame.prepend(bar);
+  renderLivesPips(getLives());
+}
+
+function renderLivesPips(lives) {
+  const container = document.getElementById('lives-icons');
+  if (!container) return;
+  container.innerHTML = '';
+  for (let i = 0; i < MAX_LIVES; i++) {
+    const pip = document.createElement('div');
+    pip.className = 'life-pip' + (i >= lives ? ' lost' : '');
+    pip.id = `life-pip-${i}`;
+    container.appendChild(pip);
+  }
+}
+
+function animateLiveLost(newLives) {
+  renderLivesPips(newLives);
+  // shake the pip that just turned off
+  const pip = document.getElementById(`life-pip-${newLives}`);
+  if (pip) {
+    pip.classList.add('shake');
+    pip.addEventListener('animationend', () => pip.classList.remove('shake'), { once: true });
+  }
+}
+
+// ── Warning screen (injected once) ─────────────────────────────────────────
+function injectWarningScreen() {
+  if (document.getElementById('screen-warning')) return;
+  const frame = document.querySelector('.frame');
+  const div = document.createElement('section');
+  div.id = 'screen-warning';
+  div.className = 'screen screen-warning';
+  div.innerHTML = `
+    <div class="warning-badge">⚠️</div>
+    <span class="warning-title">Investigación en riesgo</span>
+    <div class="report" style="text-align:center;">
+      <div class="who">Agente al mando</div>
+      <p id="warning-text"></p>
+    </div>
+    <p class="lives-label" style="color:var(--danger); margin-top:4px;">— ÚLTIMA OPORTUNIDAD —</p>
+    <button class="btn" id="btn-warning-continue">Continuar de todos modos</button>
+  `;
+  frame.appendChild(div);
+}
+
+// ── Main ───────────────────────────────────────────────────────────────────
 function initLevel(cfg) {
   const {
     sceneItems,
@@ -24,6 +103,11 @@ function initLevel(cfg) {
   const correctIds = sceneItems.map(i => i.id);
   let selected = [];
   let countdownInterval = null;
+  let pendingSuccessAction = null; // stored for warning → continue flow
+
+  // Inject lives UI
+  injectLivesBar();
+  injectWarningScreen();
 
   const el = {
     screens: {
@@ -31,23 +115,28 @@ function initLevel(cfg) {
       memorize:  document.getElementById('screen-memorize'),
       selection: document.getElementById('screen-selection'),
       result:    document.getElementById('screen-result'),
+      warning:   document.getElementById('screen-warning'),
       next:      document.getElementById('screen-next'),
     },
-    timer:    document.getElementById('timer'),
-    grid:     document.getElementById('grid'),
-    status:   document.getElementById('selection-status'),
-    confirm:  document.getElementById('btn-confirm'),
-    stamp:    document.getElementById('stamp'),
-    resultText: document.getElementById('result-text'),
-    btnContinue: document.getElementById('btn-continue'),
-    btnRestart:  document.getElementById('btn-restart'),
+    timer:           document.getElementById('timer'),
+    grid:            document.getElementById('grid'),
+    status:          document.getElementById('selection-status'),
+    confirm:         document.getElementById('btn-confirm'),
+    stamp:           document.getElementById('stamp'),
+    resultText:      document.getElementById('result-text'),
+    warningText:     document.getElementById('warning-text'),
+    btnContinue:     document.getElementById('btn-continue'),
+    btnRestart:      document.getElementById('btn-restart'),
+    btnWarnContinue: document.getElementById('btn-warning-continue'),
   };
 
+  // ── Screen management ──────────────────────────────────────────────────
   function showScreen(name) {
     Object.values(el.screens).forEach(s => s && s.classList.remove('active'));
     if (el.screens[name]) el.screens[name].classList.add('active');
   }
 
+  // ── Countdown ─────────────────────────────────────────────────────────
   function startCountdown() {
     let count = countdownSec;
     el.timer.textContent = count;
@@ -64,6 +153,7 @@ function initLevel(cfg) {
     }, 1000);
   }
 
+  // ── Selection grid ─────────────────────────────────────────────────────
   function setupSelection() {
     selected = [];
     el.confirm.disabled = true;
@@ -108,23 +198,53 @@ function initLevel(cfg) {
     el.confirm.disabled = selected.length !== pickCount;
   }
 
+  // ── Evaluation ─────────────────────────────────────────────────────────
   function evaluate() {
     const correct = selected.every(id => correctIds.includes(id));
 
-    el.stamp.textContent = correct ? 'INOCENTE' : 'SOSPECHOSO';
-    el.stamp.className   = correct ? 'stamp ok'  : 'stamp bad';
-    el.resultText.textContent = correct ? DIALOGUE_OK : DIALOGUE_BAD;
-    el.btnContinue.style.display = correct ? 'inline-block' : 'none';
-    el.btnRestart.style.display  = correct ? 'none' : 'inline-block';
+    if (correct) {
+      // Win path — normal result screen
+      el.stamp.textContent = 'INOCENTE';
+      el.stamp.className   = 'stamp ok';
+      el.resultText.textContent = DIALOGUE_OK;
+      el.btnContinue.style.display = 'inline-block';
+      el.btnRestart.style.display  = 'none';
+      showScreen('result');
+      return;
+    }
 
-    showScreen('result');
+    // Wrong answer — lose a life
+    const lives = getLives() - 1;
+    setLives(lives);
+    animateLiveLost(lives);
+
+    if (lives > 0) {
+      // Still has life — show warning, then let them advance
+      el.warningText.textContent = DIALOGUE_WARNING;
+      pendingSuccessAction = onSuccess;
+      showScreen('warning');
+    } else {
+      // Game over — show caught screen
+      el.stamp.textContent = 'SOSPECHOSO';
+      el.stamp.className   = 'stamp bad';
+      el.resultText.textContent = DIALOGUE_BAD;
+      el.btnContinue.style.display = 'none';
+      el.btnRestart.style.display  = 'inline-block';
+      showScreen('result');
+    }
   }
 
+  // ── Reset ──────────────────────────────────────────────────────────────
   function resetLevel() {
+    resetLives();
+    renderLivesPips(MAX_LIVES);
     selected = [];
     showScreen('intro');
+    // Go back to first level
+    window.location.href = 'index.html';
   }
 
+  // ── Event listeners ────────────────────────────────────────────────────
   document.getElementById('btn-start').addEventListener('click', () => {
     showScreen('memorize');
     startCountdown();
@@ -141,13 +261,27 @@ function initLevel(cfg) {
   });
 
   el.btnRestart.addEventListener('click', () => {
-    if (onRetry) onRetry();
-    else resetLevel();
+    if (onRetry) {
+      onRetry();
+    } else {
+      resetLevel();
+    }
+  });
+
+  // Warning screen: continue to next level despite the mistake
+  el.btnWarnContinue.addEventListener('click', () => {
+    if (typeof pendingSuccessAction === 'function') {
+      pendingSuccessAction();
+    } else if (pendingSuccessAction) {
+      window.location.href = pendingSuccessAction;
+    }
+    pendingSuccessAction = null;
   });
 
   const btnReplay = document.getElementById('btn-replay');
   if (btnReplay) {
     btnReplay.addEventListener('click', () => {
+      resetLives();
       window.location.href = 'index.html';
     });
   }
